@@ -25,7 +25,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--txt); min-height: 100vh; }
         
-        /* Inclusion of your specific login styles */
         .login-screen {
             min-height: 100vh; display: flex; flex-direction: column;
             align-items: center; justify-content: center; padding: 32px 20px;
@@ -45,21 +44,28 @@
             flex: 1; padding: 24px 16px; border-radius: 20px; border: 2px solid var(--border);
             background: var(--card); cursor: pointer; text-align: center; transition: all .22s;
         }
-        .who-card:hover { transform: translateY(-3px); border-color: var(--amber); }
+        .who-card:hover { transform: translateY(-3px); border-color: var(--amber); box-shadow: var(--shadow); }
         .who-icon { font-size: 42px; display: block; margin-bottom: 10px; }
+
+        /* Dashboard Styles */
+        .dashboard { padding: 40px 20px; max-width: 600px; margin: 0 auto; text-align: center; }
+        .back-btn { margin-top: 20px; padding: 10px 20px; border-radius: 50px; border: none; background: var(--txt-soft); color: white; cursor: pointer; font-weight: 700; }
     </style>
 </head>
 <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useRef } = React;
+        const { useState } = React;
 
         function App() {
+            // view can be 'login', 'patient', or 'family'
             const [view, setView] = useState('login');
 
             return (
                 <div className="app">
+                    
+                    {/* --- LOGIN VIEW --- */}
                     {view === 'login' && (
                         <div className="login-screen">
                             <div className="login-brand">
@@ -69,12 +75,12 @@
                             </div>
 
                             <div className="who-cards">
-                                <div className="who-card" onClick={() => alert('Patient login clicked')}>
+                                <div className="who-card" onClick={() => setView('patient')}>
                                     <span className="who-icon">👤</span>
                                     <div className="who-name">Patient</div>
                                     <div className="who-desc">Access your care</div>
                                 </div>
-                                <div className="who-card" onClick={() => alert('Family login clicked')}>
+                                <div className="who-card" onClick={() => setView('family')}>
                                     <span className="who-icon">🏠</span>
                                     <div className="who-name">Family</div>
                                     <div className="who-desc">View updates</div>
@@ -82,6 +88,25 @@
                             </div>
                         </div>
                     )}
+
+                    {/* --- PATIENT VIEW --- */}
+                    {view === 'patient' && (
+                        <div className="dashboard">
+                            <h1 style={{fontFamily: 'Lora, serif'}}>Patient Dashboard</h1>
+                            <p style={{margin: '20px 0'}}>Welcome back. Your daily schedule and vitals will appear here.</p>
+                            <button className="back-btn" onClick={() => setView('login')}>← Back to Login</button>
+                        </div>
+                    )}
+
+                    {/* --- FAMILY VIEW --- */}
+                    {view === 'family' && (
+                        <div className="dashboard">
+                            <h1 style={{fontFamily: 'Lora, serif'}}>Family Portal</h1>
+                            <p style={{margin: '20px 0'}}>Checking in on your loved one. Updates from today are being compiled.</p>
+                            <button className="back-btn" onClick={() => setView('login')}>← Back to Login</button>
+                        </div>
+                    )}
+
                 </div>
             );
         }
